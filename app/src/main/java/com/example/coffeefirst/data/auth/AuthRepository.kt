@@ -1,5 +1,6 @@
 package com.example.coffeefirst.data.auth
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 
 import kotlinx.coroutines.tasks.await
@@ -35,6 +36,7 @@ class AuthRepository @Inject constructor(
             if (password.length < 6) {
                 return Result.failure(IllegalArgumentException("Password must be at least 6 characters"))
             }
+
             firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             Result.success(Unit)
         } catch (e: Exception) {

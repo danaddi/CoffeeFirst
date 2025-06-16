@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -55,21 +56,25 @@ class LoginFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        // Если ProgressBar есть в layout, например с id progressBar:
-        // binding.progressBar.visibility = View.VISIBLE
+        //binding.progressBar.visibility = View.VISIBLE
     }
 
     private fun hideProgressBar() {
-        // binding.progressBar.visibility = View.GONE
+        //binding.progressBar.visibility = View.GONE
     }
 
     private fun showError(message: String) {
-        // Например, Toast:
-        // Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToHome() {
-        // TODO: переход после успешного входа
+        findNavController().navigate(
+            R.id.action_login_to_home,
+            null,
+            androidx.navigation.NavOptions.Builder()
+                .setPopUpTo(R.id.loginFragment, true)
+                .build()
+        )
     }
 
     override fun onDestroyView() {

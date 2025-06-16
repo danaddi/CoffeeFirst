@@ -33,11 +33,15 @@ class AuthViewModel @Inject constructor(
     fun register(email: String, password: String) {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
-            val result = repo.register(email, password)
-            _authState.value = if (result.isSuccess) {
-                AuthState.Success
-            } else {
-                AuthState.Error(result.exceptionOrNull()?.message ?: "Registration failed")
+            try {
+                val result = repo.register(email, password)
+                _authState.value = if (result.isSuccess) {
+                    AuthState.Success
+                } else {
+                    AuthState.Error(result.exceptionOrNull()?.message ?: "Unknown error")
+                }
+            } catch (e: Exception) {
+                _authState.value = AuthState.Error("Network error: ${e.message}")
             }
         }
     }
