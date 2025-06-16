@@ -51,6 +51,29 @@
         android:name="com.example.coffeefirst.ui.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_map"
+            app:destination="@id/mapFragment" />
+
+        <action
+            android:id="@+id/action_home_to_profile"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.coffeefirst.ui.home.MapFragment"
+        android:label="Addres selecting" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.coffeefirst.ui.home.ProfileFragment"
+        android:label="Profile" >
+        <action
+            android:id="@+id/action_profile_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

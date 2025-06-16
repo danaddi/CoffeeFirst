@@ -40,6 +40,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -69,6 +70,10 @@ dependencies {
     //implementation("androidx.room:room-runtime:2.6.1")
     //kapt("androidx.room:room-compiler:2.6.1")
     //implementation("androidx.room:room-ktx:2.6.1")
-
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    kapt("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("com.google.android.material:material:1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    implementation("com.yandex.android:maps.mobile:4.5.0-full")
+    implementation("com.vmadalin:easypermissions-ktx:1.0.0") // для работы с разрешениями
 }
