@@ -9,6 +9,7 @@ data class CartItemEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val userId: String,
     val menuItemId: String,
+    val name: String,
     val quantity: Int
 )
 
@@ -17,6 +18,7 @@ fun CartItemEntity.toCartItem(): CartItem {
         id = id,
         userId = userId,
         menuItemId = menuItemId,
+        name = name,
         quantity = quantity
     )
 }
@@ -26,6 +28,7 @@ fun CartItem.toEntity(): CartItemEntity {
         id = id,
         userId = userId,
         menuItemId = menuItemId,
+        name = name,
         quantity = quantity
     )
 }

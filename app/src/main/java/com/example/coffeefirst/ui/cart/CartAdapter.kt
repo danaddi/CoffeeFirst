@@ -2,32 +2,43 @@ package com.example.coffeefirst.ui.cart
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.*
-import com.example.coffeefirst.data.db.CartItem
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeefirst.databinding.ItemCartBinding
+import com.example.coffeefirst.data.db.CartItem
 
 class CartAdapter(
     private val onRemoveClick: (CartItem) -> Unit,
     private val onQuantityChange: (CartItem) -> Unit
 ) : ListAdapter<CartItem, CartAdapter.CartViewHolder>(DiffCallback()) {
 
-    inner class CartViewHolder(val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CartViewHolder(private val binding: ItemCartBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
         fun bind(item: CartItem) {
-            binding.itemName.text = item.menuItemId
+            binding.itemName.text = item.name
             binding.itemQuantity.text = item.quantity.toString()
-            binding.btnRemove.setOnClickListener { onRemoveClick(item) }
+
             binding.btnIncrease.setOnClickListener {
-                onQuantityChange(item.copy(quantity = item.quantity + 1))
+                val updated = item.copy(quantity = item.quantity + 1)
+                onQuantityChange(updated)
             }
+
             binding.btnDecrease.setOnClickListener {
-                if (item.quantity > 1) onQuantityChange(item.copy(quantity = item.quantity - 1))
+                val newQuantity = (item.quantity - 1).coerceAtLeast(1)
+                val updated = item.copy(quantity = newQuantity)
+                onQuantityChange(updated)
+            }
+
+            binding.btnRemove.setOnClickListener {
+                onRemoveClick(item)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemCartBinding.inflate(inflater, parent, false)
+        val binding = ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CartViewHolder(binding)
     }
 
@@ -36,7 +47,12 @@ class CartAdapter(
     }
 
     class DiffCallback : DiffUtil.ItemCallback<CartItem>() {
-        override fun areItemsTheSame(old: CartItem, newItem: CartItem) = old.id == newItem.id
-        override fun areContentsTheSame(old: CartItem, newItem: CartItem) = old == newItem
+        override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+            return oldItem.id == newItem.id // или сравнивай name, если id нет
+        }
+
+        override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+            return oldItem == newItem
+        }
     }
 }

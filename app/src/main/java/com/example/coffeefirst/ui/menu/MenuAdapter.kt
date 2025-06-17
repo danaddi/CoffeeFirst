@@ -1,5 +1,6 @@
 package com.example.coffeefirst.ui.menu
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.*
@@ -25,6 +26,7 @@ class MenuAdapter(
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
+        Log.d("MenuAdapter", "Binding item: ${getItem(position).name}")
         holder.bind(getItem(position))
     }
 

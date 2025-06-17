@@ -1,40 +1,53 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="12dp">
 
-    <TextView
-        android:id="@+id/itemName"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="Название"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
 
-    <Button
-        android:id="@+id/btnDecrease"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="-" />
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Название"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
-    <TextView
-        android:id="@+id/itemQuantity"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="1"
-        android:textSize="16sp" />
+        <Button
+            android:id="@+id/btnDecrease"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="-" />
 
-    <Button
-        android:id="@+id/btnIncrease"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+" />
+        <TextView
+            android:id="@+id/itemQuantity"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="1"
+            android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/btnRemove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Удалить" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btnIncrease"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="+" />
+
+        <Button
+            android:id="@+id/btnRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Удалить" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

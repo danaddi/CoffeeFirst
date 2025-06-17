@@ -1,5 +1,6 @@
 package com.example.coffeefirst.ui.menu
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coffeefirst.R
@@ -36,14 +37,17 @@ class MenuViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.Lazily, menuItems.filter { it.category == "Кофе" })
 
     fun selectCategory(category: String) {
+        Log.d("MenuViewModel", "Category selected: $category")
         _selectedCategory.value = category
     }
+
 
     fun addToCart(menuItem: MenuItem) {
         viewModelScope.launch {
             val item = CartItem(
                 userId = userId,
                 menuItemId = menuItem.id,
+                name = menuItem.name,
                 quantity = 1
             )
             cartRepository.addToCart(item)
