@@ -5,18 +5,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.Button
+import androidx.annotation.OptIn
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.coffeefirst.R
 import com.example.coffeefirst.databinding.FragmentHomeBinding
+import com.example.coffeefirst.ui.cart.CartViewModel
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import dagger.hilt.android.AndroidEntryPoint
+import androidx.fragment.app.activityViewModels
+import com.example.coffeefirst.ui.menu.MenuViewModel
 
+
+
+@AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val cartViewModel: CartViewModel by viewModels()
+    private val menuViewModel: MenuViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +68,47 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             dialog.show(parentFragmentManager, "QrCodeDialog")
         }
 
+        binding.btnCart.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_cart)
+        }
+
+
+        cartViewModel.cartItems.observe(viewLifecycleOwner) { items ->
+            val count = items.sumOf { it.quantity }
+            showBadge(binding.btnCart, count)
+        }
+
+        setupCategoryButtons()
+
+
     }
+    @OptIn(ExperimentalBadgeUtils::class)
+    private fun showBadge(view: View, count: Int) {
+        val badge = BadgeDrawable.create(requireContext()).apply {
+            number = count
+            isVisible = count > 0
+        }
+        BadgeUtils.attachBadgeDrawable(badge, view)
+    }
+
+    private fun setupCategoryButtons() {
+        val categories = listOf("Кофе", "Чай", "Еда", "Десерты")
+
+        binding.categoryContainer.removeAllViews()
+
+        for (category in categories) {
+            val button = Button(requireContext()).apply {
+                text = category
+                setOnClickListener {
+                    menuViewModel.selectCategory(category)
+                }
+            }
+            binding.categoryContainer.addView(button)
+        }
+
+        menuViewModel.selectCategory(categories.first())
+    }
+
 
     private fun generateQrCode(data: String) {
         try {

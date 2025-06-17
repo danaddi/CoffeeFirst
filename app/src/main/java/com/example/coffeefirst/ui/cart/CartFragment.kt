@@ -1,0 +1,50 @@
+package com.example.coffeefirst.ui.cart
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.coffeefirst.databinding.FragmentCartBinding
+import com.example.coffeefirst.ui.cart.CartAdapter
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class CartFragment : Fragment() {
+
+    private var _binding: FragmentCartBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: CartViewModel by viewModels()
+    private lateinit var adapter: CartAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentCartBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = CartAdapter(
+            onRemoveClick = { viewModel.removeItem(it) },
+            onQuantityChange = { viewModel.updateCartItem(it) }
+        )
+
+        binding.cartRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.cartRecyclerView.adapter = adapter
+
+        viewModel.cartItems.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}

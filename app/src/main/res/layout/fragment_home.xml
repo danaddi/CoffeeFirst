@@ -25,10 +25,9 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-
                     <LinearLayout
                         android:id="@+id/address_container"
-                        android:layout_width="335dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
@@ -56,45 +55,78 @@
                         android:layout_height="match_parent"
                         android:padding="12dp"
                         android:src="@drawable/ic_profile" />
+
+                    <ImageView
+                        android:id="@+id/btn_cart"
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_cart" />
+
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/container"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:id="@+id/bonusQrContainer"
+            <FrameLayout
+                android:id="@+id/container"
                 android:layout_width="match_parent"
-                android:layout_height="112dp"
-                android:layout_margin="16dp"
-                android:background="@android:color/white"
-                android:elevation="4dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
+                android:layout_height="146dp">
 
-                <ImageView
-                    android:id="@+id/qrImageView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@android:color/background_light"
-                    android:contentDescription="@string/qr_code"
-                    android:scaleType="centerInside" />
+                <LinearLayout
+                    android:id="@+id/bonusQrContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="112dp"
+                    android:layout_margin="16dp"
+                    android:background="@android:color/white"
+                    android:elevation="4dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/bonusTextView"
+                    <ImageView
+                        android:id="@+id/qrImageView"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@android:color/background_light"
+                        android:contentDescription="@string/qr_code"
+                        android:scaleType="centerInside" />
+
+                    <TextView
+                        android:id="@+id/bonusTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Бонусы: 0"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:id="@+id/categoryContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Бонусы: 0"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </FrameLayout>
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
+            <fragment
+                android:id="@+id/menuFragment"
+                android:name="com.example.coffeefirst.ui.menu.MenuFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>
