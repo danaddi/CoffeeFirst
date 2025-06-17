@@ -2,6 +2,8 @@ package com.example.coffeefirst.ui.home
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Parcel
@@ -12,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
@@ -28,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -37,6 +41,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var currentLocation: LatLng? = null
+    @Inject
+    lateinit var sharedPref: SharedPreferences
+
 
 
     private val coffeeShops = listOf(
@@ -44,6 +51,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         CoffeeShop("Surf Coffee x Erudit", LatLng(55.692140508992225, 37.53137049016307)),
         CoffeeShop("Surf Coffee x Ramenki", LatLng(55.70223418079328, 37.49337941399919))
     )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -117,6 +125,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun navigateBackWithSelectedLocation(shop: CoffeeShop) {
+        sharedPref.edit {
+            putString("last_selected_shop_name", shop.name)
+            putString("last_selected_shop_lat", shop.location.latitude.toString())
+            putString("last_selected_shop_lng", shop.location.longitude.toString())
+        }
         findNavController().previousBackStackEntry?.savedStateHandle?.set(
             "selected_coffee_shop",
             shop
@@ -262,6 +275,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+        fun getLastSelectedShop(sharedPref: SharedPreferences): CoffeeShop? {
+            val name = sharedPref.getString("last_selected_shop_name", null)
+            val lat = sharedPref.getString("last_selected_shop_lat", null)?.toDoubleOrNull()
+            val lng = sharedPref.getString("last_selected_shop_lng", null)?.toDoubleOrNull()
+
+            return if (name != null && lat != null && lng != null) {
+                CoffeeShop(name, LatLng(lat, lng))
+            } else {
+                null
+            }
+        }
     }
 
     data class CoffeeShop(

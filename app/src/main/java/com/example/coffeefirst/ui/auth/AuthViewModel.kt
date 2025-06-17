@@ -1,5 +1,6 @@
 package com.example.coffeefirst.ui.auth
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,10 +16,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val repo: AuthRepository
+    private val repo: AuthRepository,
+    private val sharedPref: SharedPreferences
 ) : ViewModel() {
 
-    private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
+    private val _authState = MutableStateFlow<AuthState>(loadSavedAuthState())
     val authState: StateFlow<AuthState> = _authState
 
     fun login(email: String, password: String) {
@@ -26,6 +28,7 @@ class AuthViewModel @Inject constructor(
             _authState.value = AuthState.Loading
             val result = repo.login(email, password)
             _authState.value = if (result.isSuccess) {
+                sharedPref.edit().putBoolean("is_logged_in", true).apply()
                 AuthState.Success
             } else {
                 AuthState.Error(result.exceptionOrNull()?.message ?: "Login failed")
@@ -39,6 +42,7 @@ class AuthViewModel @Inject constructor(
             try {
                 val result = repo.register(email, password)
                 _authState.value = if (result.isSuccess) {
+                    sharedPref.edit().putBoolean("is_logged_in", true).apply()
                     AuthState.Success
                 } else {
                     AuthState.Error(result.exceptionOrNull()?.message ?: "Unknown error")
@@ -49,11 +53,21 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    private fun loadSavedAuthState(): AuthState {
+        return if (sharedPref.getBoolean("is_logged_in", false)) {
+            AuthState.Success
+        } else {
+            AuthState.Idle
+        }
+    }
+
     fun deleteAccount(): LiveData<Result<Unit>> {
         val result = MutableLiveData<Result<Unit>>()
         viewModelScope.launch {
             try {
                 FirebaseAuth.getInstance().currentUser?.delete()?.await()
+                sharedPref.edit().putBoolean("is_logged_in", false).apply()
+                clearUserData()
                 result.postValue(Result.success(Unit))
             } catch (e: Exception) {
                 result.postValue(Result.failure(e))
@@ -64,7 +78,16 @@ class AuthViewModel @Inject constructor(
 
     fun logout() {
         FirebaseAuth.getInstance().signOut()
+        sharedPref.edit().putBoolean("is_logged_in", false).apply()
+        clearUserData()
         _authState.value = AuthState.Idle
+    }
+
+    private fun clearUserData() {
+        // Очищаем все пользовательские данные, кроме is_logged_in (оставляем false)
+        val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
+        sharedPref.edit().clear().apply()
+        sharedPref.edit().putBoolean("is_logged_in", isLoggedIn).apply()
     }
 }
 
