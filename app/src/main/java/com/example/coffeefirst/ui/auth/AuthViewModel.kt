@@ -84,7 +84,6 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun clearUserData() {
-        // Очищаем все пользовательские данные, кроме is_logged_in (оставляем false)
         val isLoggedIn = sharedPref.getBoolean("is_logged_in", false)
         sharedPref.edit().clear().apply()
         sharedPref.edit().putBoolean("is_logged_in", isLoggedIn).apply()

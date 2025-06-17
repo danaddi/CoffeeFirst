@@ -4,4 +4,5 @@
     <string name="login_title">Вход\n</string>
     <string name="zoom_out">Уменьшить</string>
     <string name="zoom_in">Увеличить</string>
+    <string name="qr_code">qr_code</string>
 </resources>
