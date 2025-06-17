@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coffeefirst.databinding.FragmentMenuBinding
+import com.example.coffeefirst.ui.cart.CartViewModel
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ class MenuFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: MenuViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by activityViewModels()
 
     private lateinit var adapter: MenuAdapter
 
@@ -35,7 +37,19 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = MenuAdapter(onAddToCart = { viewModel.addToCart(it) })
+        adapter = MenuAdapter(
+            onAddToCart = { menuItem ->
+                val userId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
+                cartViewModel.addToCart(
+                    com.example.coffeefirst.data.db.CartItem(
+                        userId = userId,
+                        menuItemId = menuItem.id,
+                        name = menuItem.name,
+                        quantity = 1
+                    )
+                )
+            }
+        )
 
         binding.menuRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.menuRecyclerView.adapter = adapter

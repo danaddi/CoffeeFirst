@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.coffeefirst.data.CartRepository
 import com.example.coffeefirst.data.db.CartItem
 import com.google.firebase.auth.FirebaseAuth
-import dagger.hilt.android.AndroidEntryPoint
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,11 +21,22 @@ class CartViewModel @Inject constructor(
 
     val cartItems = cartRepository.getCartItems(userId).asLiveData()
 
-    fun addToCart(item: CartItem) {
+    fun addToCart(newItem: CartItem) {
         viewModelScope.launch {
-            cartRepository.addToCart(item)
+            val currentItems = cartRepository.getCartItemsOnce(userId)
+            val existingItem = currentItems.find { it.menuItemId == newItem.menuItemId }
+            if (existingItem != null) {
+                val updatedItem = existingItem.copy(quantity = existingItem.quantity + newItem.quantity)
+                cartRepository.updateCartItem(updatedItem)
+                Log.d("Cart","Обновляю количество для itemId=${updatedItem.id}, новое количество=${updatedItem.quantity}")
+            } else {
+                cartRepository.addToCart(newItem)
+                Log.d("Cart","Добавляю новый элемент в корзину menuItemId=${newItem.menuItemId}")
+            }
         }
     }
+
+
 
     fun updateCartItem(item: CartItem) {
         viewModelScope.launch {

@@ -5,12 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coffeefirst.R
 import com.example.coffeefirst.data.CartRepository
-import com.example.coffeefirst.data.db.CartItem
 import com.example.coffeefirst.data.model.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,18 +37,5 @@ class MenuViewModel @Inject constructor(
     fun selectCategory(category: String) {
         Log.d("MenuViewModel", "Category selected: $category")
         _selectedCategory.value = category
-    }
-
-
-    fun addToCart(menuItem: MenuItem) {
-        viewModelScope.launch {
-            val item = CartItem(
-                userId = userId,
-                menuItemId = menuItem.id,
-                name = menuItem.name,
-                quantity = 1
-            )
-            cartRepository.addToCart(item)
-        }
     }
 }

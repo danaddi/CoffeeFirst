@@ -5,6 +5,7 @@ import com.example.coffeefirst.data.db.CartItem
 import com.example.coffeefirst.data.db.toCartItem
 import com.example.coffeefirst.data.db.toEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class CartRepository(private val cartDao: CartDao) {
@@ -30,4 +31,9 @@ class CartRepository(private val cartDao: CartDao) {
     suspend fun clearCart(userId: String) {
         cartDao.clearCart(userId)
     }
+
+    suspend fun getCartItemsOnce(userId: String): List<CartItem> {
+        return cartDao.getCartItems(userId).first().map { it.toCartItem() }
+    }
+
 }
