@@ -24,6 +24,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<MapFragment.CoffeeShop>(
+            "selected_coffee_shop"
+        )?.observe(viewLifecycleOwner) { coffeeShop ->
+            binding.tvAddress.text = coffeeShop.name
+        }
         binding.addressContainer.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_map)
         }

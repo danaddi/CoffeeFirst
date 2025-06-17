@@ -2,4 +2,6 @@
     <string name="app_name">CoffeeFirst</string>
     <string name="register_title">Регистрация</string>
     <string name="login_title">Вход\n</string>
+    <string name="zoom_out">Уменьшить</string>
+    <string name="zoom_in">Увеличить</string>
 </resources>
