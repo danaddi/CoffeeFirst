@@ -7,6 +7,8 @@ import com.example.coffeefirst.data.CartRepository
 import com.example.coffeefirst.data.db.CartItem
 import com.google.firebase.auth.FirebaseAuth
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +20,9 @@ class CartViewModel @Inject constructor(
     private val auth: FirebaseAuth
 ) : ViewModel() {
     private val userId = auth.currentUser!!.uid
+
+    private val _bonus = MutableLiveData<Int>(0)
+    val bonus: LiveData<Int> = _bonus
 
     val cartItems = cartRepository.getCartItems(userId).asLiveData()
 
@@ -46,5 +51,9 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             cartRepository.removeFromCart(item)
         }
+    }
+
+    fun addBonus(amount: Int){
+        _bonus.value = (_bonus.value ?: 0) + amount
     }
 }

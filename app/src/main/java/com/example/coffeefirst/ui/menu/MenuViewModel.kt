@@ -20,11 +20,11 @@ class MenuViewModel @Inject constructor(
     private val userId = auth.currentUser?.uid ?: ""
 
     val menuItems = listOf(
-        MenuItem("coffee1", "Капучино", R.drawable.latte, "Кофе", 150.0),
-        MenuItem("coffee2", "Латте", R.drawable.latte, "Кофе", 200.0),
-        MenuItem("tea1", "Зеленый чай", R.drawable.water, "Чай", 100.0),
-        MenuItem("food1", "Сэндвич", R.drawable.hamburger, "Еда", 120.0),
-        MenuItem("dessert1", "Чизкейк", R.drawable.cheesecake, "Десерты", 180.0),
+        MenuItem("coffee1", "Капучино", R.drawable.latte, "Кофе", 150.0f),
+        MenuItem("coffee2", "Латте", R.drawable.latte, "Кофе", 200.0f),
+        MenuItem("tea1", "Зеленый чай", R.drawable.water, "Чай", 100.0f),
+        MenuItem("food1", "Сэндвич", R.drawable.hamburger, "Еда", 120.0f),
+        MenuItem("dessert1", "Чизкейк", R.drawable.cheesecake, "Десерты", 180.0f),
     )
 
     private val _selectedCategory = MutableStateFlow("Кофе")

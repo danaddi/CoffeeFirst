@@ -7,5 +7,5 @@ data class CartItem(
     val menuItemId: String,
     val name: String,
     val quantity: Int,
-    val price: Double = 0.0
+    val price: Float
 )

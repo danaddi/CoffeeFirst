@@ -11,7 +11,7 @@ data class CartItemEntity(
     val menuItemId: String,
     val name: String,
     val quantity: Int,
-    val price: Double = 0.0
+    val price: Float
 )
 
 fun CartItemEntity.toCartItem(): CartItem {

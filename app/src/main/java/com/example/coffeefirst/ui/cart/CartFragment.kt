@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coffeefirst.data.db.CartItem
 import com.example.coffeefirst.databinding.FragmentCartBinding
-import com.example.coffeefirst.ui.cart.CartAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,21 +51,21 @@ class CartFragment : Fragment() {
                 return@setOnClickListener
             }
             val totalPrice = calculateTotalPrice(cartItems)
-            // Можно вместо Toast потом отправить заказ на сервер
-            Toast.makeText(requireContext(), "Итоговая сумма: $totalPrice руб.", Toast.LENGTH_LONG).show()
+            val bonus = (totalPrice * 0.2).toInt()
+
+            val action = CartFragmentDirections.actionCartToPayment(totalPrice.toFloat(), bonus)
+            findNavController().navigate(action)
         }
     }
 
     private fun calculateTotalPrice(items: List<CartItem>): Double {
-        return items.sumOf { it.quantity * getPriceForMenuItem(it.menuItemId) }
+        return items.sumOf { it.quantity * it.price.toDouble() }
     }
 
-    private fun getPriceForMenuItem(menuItemId: String): Double {
-        return 100.0
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
+

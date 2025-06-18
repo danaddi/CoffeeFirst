@@ -1,5 +1,6 @@
 package com.example.coffeefirst.ui.home
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -59,8 +60,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         generateQrCode(userId)
 
-        val randomBonus = (0..100).random()
-        binding.bonusTextView.text = "Бонусы: $randomBonus"
+        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val bonus = prefs.getInt("bonus", 0)
+        binding.bonusTextView.text = "Бонусы: $bonus"
 
         binding.qrImageView.setOnClickListener {
             val userId = FirebaseAuth.getInstance().currentUser!!.uid

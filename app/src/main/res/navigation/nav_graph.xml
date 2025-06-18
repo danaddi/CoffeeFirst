@@ -84,6 +84,26 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.example.coffeefirst.ui.cart.CartFragment"
-        android:label="Cart" />
+        android:label="Cart" >
+        <action
+            android:id="@+id/action_cart_to_payment"
+            app:destination="@id/paymentFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_down" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.example.coffeefirst.ui.cart.PaymentFragment"
+        android:label="Оплата"
+        tools:layout="@layout/fragment_payment">
+        <argument
+            android:name="total_price"
+            app:argType="float" />
+        <argument
+            android:name="bonus"
+            app:argType="integer" />
+    </fragment>
 
     </navigation>
