@@ -38,16 +38,13 @@ class PaymentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         var total = args.totalPrice
-        val bonus = args.bonus
 
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val earnedBonus = args.bonus
         val currentBonus = prefs.getInt("bonus", 0)
 
-        binding.paymentText.text = "Сумма: $total ₽\nБонусы за заказ: +$earnedBonus\nДоступно бонусов: $currentBonus"
+        binding.paymentDetails.text = "Сумма: $total ₽\nБонусы за заказ: +$earnedBonus\nДоступно бонусов: $currentBonus"
 
-
-        binding.paymentText.text = "Сумма: $total ₽\nБонусы: +$bonus"
 
         binding.buttonPay.setOnClickListener {
             val success = (1..10).random() <= 8
@@ -81,6 +78,15 @@ class PaymentFragment : Fragment() {
         }
 
         binding.buttonApplyBonus.setOnClickListener {
+            if (isUsingBonus) {
+                Toast.makeText(
+                    requireContext(),
+                    "Бонусы уже были применены",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
             val input = binding.etUseBonus.text.toString().toIntOrNull() ?: 0
 
             if (input <= 0) {
@@ -114,7 +120,7 @@ class PaymentFragment : Fragment() {
             isUsingBonus = true
             total -= appliedBonus
 
-            binding.paymentText.text =
+            binding.paymentDetails.text =
                 "Сумма: $total ₽\nБонусы за заказ: +$earnedBonus\nСписано бонусов: $appliedBonus\nБонусы не будут начислены"
             Toast.makeText(requireContext(), "Списано $appliedBonus бонусов", Toast.LENGTH_SHORT)
                 .show()
