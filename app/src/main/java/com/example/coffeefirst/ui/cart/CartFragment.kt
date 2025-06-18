@@ -56,6 +56,8 @@ class CartFragment : Fragment() {
             val action = CartFragmentDirections.actionCartToPayment(totalPrice.toFloat(), bonus)
             findNavController().navigate(action)
         }
+
+
     }
 
     private fun calculateTotalPrice(items: List<CartItem>): Double {

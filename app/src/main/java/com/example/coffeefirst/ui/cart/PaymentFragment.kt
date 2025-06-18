@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.coffeefirst.databinding.FragmentPaymentBinding
@@ -19,6 +20,9 @@ class PaymentFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val args: PaymentFragmentArgs by navArgs()
+
+    private val cartViewModel: CartViewModel by viewModels({ requireActivity() })
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +45,7 @@ class PaymentFragment : Fragment() {
 
             if (success) {
                 saveBonus(bonus)
+                cartViewModel.clearCart()
                 Toast.makeText(requireContext(), "Оплата прошла успешно!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireContext(), "Оплата не прошла. Попробуйте снова.", Toast.LENGTH_SHORT).show()

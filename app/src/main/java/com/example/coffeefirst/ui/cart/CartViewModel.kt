@@ -39,7 +39,11 @@ class CartViewModel @Inject constructor(
         }
     }
 
-
+    fun clearCart() {
+        viewModelScope.launch {
+            cartRepository.clearCart(userId)
+        }
+    }
 
     fun updateCartItem(item: CartItem) {
         viewModelScope.launch {
