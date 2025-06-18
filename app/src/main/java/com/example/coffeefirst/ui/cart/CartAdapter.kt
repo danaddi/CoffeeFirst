@@ -18,6 +18,7 @@ class CartAdapter(
 
         fun bind(item: CartItem) {
             binding.itemName.text = item.name
+            binding.itemPrice.text = item.price.toString() + " ₽"
             binding.itemQuantity.text = item.quantity.toString()
 
             binding.btnIncrease.setOnClickListener {
@@ -48,7 +49,7 @@ class CartAdapter(
 
     class DiffCallback : DiffUtil.ItemCallback<CartItem>() {
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem.id == newItem.id // или сравнивай name, если id нет
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {

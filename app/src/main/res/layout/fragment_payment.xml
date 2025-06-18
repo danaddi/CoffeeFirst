@@ -1,26 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/background_light"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:elevation="8dp">
+    android:layout_height="match_parent"
+    android:background="#80000000"> <!-- Полупрозрачный черный фон -->
 
-    <TextView
-        android:id="@+id/paymentText"
-        android:layout_width="wrap_content"
+    <!-- Основная карточка -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Обработка оплаты..."
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_gravity="center"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@android:color/white">
 
-    <Button
-        android:id="@+id/buttonPay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Оплатить"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/paymentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Оплата заказа"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/paymentDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Сумма: 0 ₽\nБонусы: +0"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/buttonPay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Оплатить"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@android:color/transparent"
+                android:text="Отмена"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/etUseBonus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Введите количество бонусов для списания"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/buttonApplyBonus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Применить бонусы"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

@@ -23,6 +23,8 @@ class PaymentFragment : Fragment() {
 
     private val cartViewModel: CartViewModel by viewModels({ requireActivity() })
 
+    private var appliedBonus: Int = 0
+    private var isUsingBonus: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +37,15 @@ class PaymentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val total = args.totalPrice
+        var total = args.totalPrice
         val bonus = args.bonus
+
+        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val earnedBonus = args.bonus
+        val currentBonus = prefs.getInt("bonus", 0)
+
+        binding.paymentText.text = "Сумма: $total ₽\nБонусы за заказ: +$earnedBonus\nДоступно бонусов: $currentBonus"
+
 
         binding.paymentText.text = "Сумма: $total ₽\nБонусы: +$bonus"
 
@@ -44,21 +53,73 @@ class PaymentFragment : Fragment() {
             val success = (1..10).random() <= 8
 
             if (success) {
-                saveBonus(bonus)
+                val updatedBonus = if (isUsingBonus) {
+                    currentBonus - appliedBonus
+                } else {
+                    currentBonus + earnedBonus
+                }
+                prefs.edit().putInt("bonus", updatedBonus).apply()
+
                 cartViewModel.clearCart()
-                Toast.makeText(requireContext(), "Оплата прошла успешно!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    if (isUsingBonus) "Оплачено с бонусами! Бонусы не начислены." else "Оплата прошла. Начислено $earnedBonus бонусов!",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                Toast.makeText(requireContext(), "Оплата не прошла. Попробуйте снова.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Оплата не прошла. Попробуйте снова.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             findNavController().popBackStack()
         }
-    }
 
-    private fun saveBonus(bonus: Int) {
-        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val current = prefs.getInt("bonus", 0)
-        prefs.edit().putInt("bonus", current + bonus).apply()
+        binding.buttonCancel.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.buttonApplyBonus.setOnClickListener {
+            val input = binding.etUseBonus.text.toString().toIntOrNull() ?: 0
+
+            if (input <= 0) {
+                Toast.makeText(
+                    requireContext(),
+                    "Введите корректное количество бонусов",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            if (input > currentBonus) {
+                Toast.makeText(
+                    requireContext(),
+                    "У вас только $currentBonus бонусов",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            if (input > total) {
+                Toast.makeText(
+                    requireContext(),
+                    "Сумма заказа меньше введённых бонусов",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            appliedBonus = input
+            isUsingBonus = true
+            total -= appliedBonus
+
+            binding.paymentText.text =
+                "Сумма: $total ₽\nБонусы за заказ: +$earnedBonus\nСписано бонусов: $appliedBonus\nБонусы не будут начислены"
+            Toast.makeText(requireContext(), "Списано $appliedBonus бонусов", Toast.LENGTH_SHORT)
+                .show()
+        }
+
     }
 
     override fun onDestroyView() {
