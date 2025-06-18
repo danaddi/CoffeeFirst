@@ -3,7 +3,9 @@ package com.example.coffeefirst.ui.menu
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.*
+import com.example.coffeefirst.R
 import com.example.coffeefirst.databinding.ItemMenuBinding
 import com.example.coffeefirst.data.model.MenuItem
 
@@ -12,9 +14,11 @@ class MenuAdapter(
 ) : ListAdapter<MenuItem, MenuAdapter.MenuViewHolder>(DiffCallback()) {
 
     inner class MenuViewHolder(val binding: ItemMenuBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(item: MenuItem) {
             binding.title.text = item.name
             binding.image.setImageResource(item.imageResId)
+            binding.price.text = "Цена: ${item.price.toInt()} ₽"
             binding.root.setOnClickListener { onAddToCart(item) }
         }
     }
