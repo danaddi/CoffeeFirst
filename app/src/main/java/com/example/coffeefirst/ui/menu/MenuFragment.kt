@@ -45,7 +45,8 @@ class MenuFragment : Fragment() {
                         userId = userId,
                         menuItemId = menuItem.id,
                         name = menuItem.name,
-                        quantity = 1
+                        quantity = 1,
+                        price = menuItem.price
                     )
                 )
             }

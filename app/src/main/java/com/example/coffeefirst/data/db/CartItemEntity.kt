@@ -10,7 +10,8 @@ data class CartItemEntity(
     val userId: String,
     val menuItemId: String,
     val name: String,
-    val quantity: Int
+    val quantity: Int,
+    val price: Double = 0.0
 )
 
 fun CartItemEntity.toCartItem(): CartItem {
@@ -19,7 +20,8 @@ fun CartItemEntity.toCartItem(): CartItem {
         userId = userId,
         menuItemId = menuItemId,
         name = name,
-        quantity = quantity
+        quantity = quantity,
+        price = price
     )
 }
 
@@ -29,6 +31,7 @@ fun CartItem.toEntity(): CartItemEntity {
         userId = userId,
         menuItemId = menuItemId,
         name = name,
-        quantity = quantity
+        quantity = quantity,
+        price = price
     )
 }

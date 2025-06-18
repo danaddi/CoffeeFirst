@@ -28,10 +28,8 @@ class CartViewModel @Inject constructor(
             if (existingItem != null) {
                 val updatedItem = existingItem.copy(quantity = existingItem.quantity + newItem.quantity)
                 cartRepository.updateCartItem(updatedItem)
-                Log.d("Cart","Обновляю количество для itemId=${updatedItem.id}, новое количество=${updatedItem.quantity}")
             } else {
                 cartRepository.addToCart(newItem)
-                Log.d("Cart","Добавляю новый элемент в корзину menuItemId=${newItem.menuItemId}")
             }
         }
     }

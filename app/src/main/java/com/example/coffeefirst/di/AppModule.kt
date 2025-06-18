@@ -24,7 +24,9 @@ object AppModule {
             appContext,
             AppDatabase::class.java,
             "coffee_db"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigrationOnDowngrade()
+            .build()
     }
 
     @Provides
