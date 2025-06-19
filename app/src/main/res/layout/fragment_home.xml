@@ -7,7 +7,6 @@
     android:background="#FFFFFF"
     tools:context=".ui.home.HomeFragment">
 
-    <!-- Узкая верхняя панель (уменьшена высота) -->
     <LinearLayout
         android:id="@+id/address_container"
         android:layout_width="match_parent"
@@ -39,7 +38,6 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
-        <!-- Изменено на ImageButton с ripple-эффектом -->
         <ImageButton
             android:id="@+id/btn_profile"
             android:layout_width="48dp"
@@ -59,14 +57,14 @@
             app:tint="#FFFFFF" />
     </LinearLayout>
 
-    <!-- Основное содержимое -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingTop="72dp">
 
-        <!-- Карточка бонусов (стилизованная) -->
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bonusQrContainer"
             android:layout_width="match_parent"
@@ -105,7 +103,6 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Категории с новым дизайном -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -124,7 +121,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp">
 
-                <!-- Пример стилизованной кнопки категории -->
+
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
@@ -138,11 +135,9 @@
                     app:strokeWidth="1dp"
                     app:rippleColor="#D7CCC8" />
 
-                <!-- Другие кнопки будут добавляться динамически -->
             </LinearLayout>
         </HorizontalScrollView>
 
-        <!-- Фрагмент меню (без изменений) -->
         <fragment
             android:id="@+id/menuFragment"
             android:name="com.example.coffeefirst.ui.menu.MenuFragment"

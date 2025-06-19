@@ -1,6 +1,5 @@
 package com.example.coffeefirst.data.db
 
-import com.example.coffeefirst.data.db.CartItem
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

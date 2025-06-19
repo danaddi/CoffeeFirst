@@ -2,7 +2,6 @@ package com.example.coffeefirst.ui.home
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle

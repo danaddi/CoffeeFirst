@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.coffeefirst.data.CartRepository
 import com.example.coffeefirst.data.db.CartItem
 import com.google.firebase.auth.FirebaseAuth
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel

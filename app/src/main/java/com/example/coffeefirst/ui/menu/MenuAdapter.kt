@@ -3,9 +3,7 @@ package com.example.coffeefirst.ui.menu
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.*
-import com.example.coffeefirst.R
 import com.example.coffeefirst.databinding.ItemMenuBinding
 import com.example.coffeefirst.data.model.MenuItem
 

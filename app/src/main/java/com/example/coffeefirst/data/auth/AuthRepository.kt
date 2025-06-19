@@ -1,6 +1,5 @@
 package com.example.coffeefirst.data.auth
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 
 import kotlinx.coroutines.tasks.await

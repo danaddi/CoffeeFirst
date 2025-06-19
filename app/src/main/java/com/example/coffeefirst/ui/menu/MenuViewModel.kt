@@ -13,11 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
-    private val cartRepository: CartRepository,
-    private val auth: FirebaseAuth
 ) : ViewModel() {
-
-    private val userId = auth.currentUser?.uid ?: ""
 
     val menuItems = listOf(
         MenuItem("coffee1", "Капучино", R.drawable.latte, "Кофе", 150.0f),
